@@ -29,9 +29,29 @@ export async function createActivity(token, activity) {
     },
     body: JSON.stringify(activity),
   });
-
+      const result = await response.json();
   if (!response.ok) {
-    const result = await response.json();
+    // const result = await response.json();
     throw Error(result.message);
+  }
+}
+
+//create delete function
+export async function deleteActivity(token, id){
+  console.log(id)
+  if(!token) throw Error("you must be logged in to delete activity ")
+  try{
+    const response = await fetch(API + "/activities/" + id, {
+      method: "DELETE",
+      headers:{
+        "Content-Type": "application/JSON",
+        "Authorization": `Bearer ${token}`,
+      }
+    })
+    if(response === 204){
+      console.log("delete success: "+ id)
+    }
+  }catch(err){
+    console.log(err)
   }
 }
